@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 
-import { State } from './hooks/reducer';
-import { useBasePromise, UsePromiseFetcher, UsePromiseOptions } from './hooks/useBasePromise';
-import { usePromiseResultCache } from './hooks/usePromiseResultCache';
+import { State } from './reducer';
+import { useBasePromise, UsePromiseOptions } from './useBasePromise';
+import { usePromiseResultCache } from './usePromiseResultCache';
 
-function usePromise<T>(id: string, fetcher: UsePromiseFetcher<T>, options?: UsePromiseOptions): State<T> {
+function usePromise<T>(id: string, fetcher: Promise<T>, options?: UsePromiseOptions): State<T> {
   const hasFetched = useRef(false);
   const { state, setState } = usePromiseResultCache<T>(id);
   const fetchData = useBasePromise<T>(id, fetcher, options, setState);

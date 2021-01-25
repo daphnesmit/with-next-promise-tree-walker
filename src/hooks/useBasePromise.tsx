@@ -8,13 +8,11 @@ export type UsePromiseOptions = {
   skip?: boolean
 }
 
-export type UsePromiseFetcher<T> = (...args: any) => Promise<T>;
-
 export type UsePromiseCallback<T> = (data?: T, error?: Error) => void
 
 function useBasePromise<T>(
   id: string,
-  fetcher: UsePromiseFetcher<T>,
+  fetcher: Promise<T>,
   options?: UsePromiseOptions,
   callback?: UsePromiseCallback<T>,
 ) {
@@ -42,8 +40,8 @@ function useBasePromise<T>(
     return error;
   }, [addResultToCache, callback, id]);
 
-  const getPromise = useCallback((promiseFn: UsePromiseFetcher<T>) => {
-    return promiseFn()
+  const getPromise = useCallback((promise: Promise<T>) => {
+    return promise
       .then(getPromiseSuccess)
       .catch(getPromiseError);
   }, [getPromiseError, getPromiseSuccess]);
