@@ -12,7 +12,7 @@ This function walks down the entire React tree and executes every required promi
 
 When the Promise resolves, you're ready to render your React tree and return it, along with the current state of the cache.
 
-*Sidenote!*
+__Sidenote!__
 This library walks down the entire React tree on SSR.
 It'll run renderToStaticMarkup from ReactDOMServer. Note that this is the React SSR API and means that it does a full server-render of the whole React tree.
 
@@ -24,7 +24,7 @@ When the promise is thrown that is awaited and then the rendering starts again, 
 
 This means that if you have nested queries you cause a lot of full server-renders.
 
-This solution might cause you a performance overhead (and general bundle size when using Apollo is quite heavy currently). 
+This solution might cause you a performance overhead.
 
 But try it out and see if it is a bottleneck for you!
 
