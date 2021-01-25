@@ -5,6 +5,7 @@ import Head from 'next/head';
 import React, { useMemo } from 'react';
 import { PromiseCache, InitialCache } from './data/PromiseCache';
 import { isSSR } from './utils/isSSR';
+import { getPromiseDataFromTree } from './ssr/getPromiseDataFromTree';
 
 
 type WithPromisesContext = AppContext & NextPageContext;
@@ -54,7 +55,6 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
     const promises = new PromiseCache(true);
 
     try {
-      const { getPromiseDataFromTree } = await import('with-next-promise-tree-walker/ssr/getPromiseDataFromTree');
       // Since AppComponents and PageComponents have different context types
       // we need to modify their props a little.
       let props;
