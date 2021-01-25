@@ -24,7 +24,7 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
     const _promises = useMemo<PromiseCache>(() => promises || new PromiseCache({ isSSR: false }), [promises]);
 
     if (initialCacheResult && Object.keys(initialCacheResult).length) {
-      _promises.setInitialCacheResultResult(initialCacheResult);
+      _promises.setInitialCacheResult(initialCacheResult);
     }
 
     return (
