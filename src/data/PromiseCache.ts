@@ -63,13 +63,13 @@ export class PromiseCache {
     }
   }
 
-  public setInitialCacheResultResult(state: InitialCacheResult) {
+  public setInitialCacheResult(state: InitialCacheResult) {
     for (const key in state) {
       this.cachedResults.set(key, state[key]);
     }
   }
 
-  public getInitialCacheResultResult() {
+  public getInitialCacheResult() {
     const cache: InitialCacheResult = {};
     this.cachedResults.forEach((value, key) => {
       cache[key] = value;
