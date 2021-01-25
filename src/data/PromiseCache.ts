@@ -4,6 +4,9 @@ export interface InitialCache {
   [key: string]: any
 }
 
+interface PromiseCacheOptions {
+  isSSR?: boolean
+}
 export class PromiseCache {
   private isSsrInitialized = false;
   private cachedResults = new Map<string, any>();
@@ -11,8 +14,8 @@ export class PromiseCache {
 
   private static context: Context<PromiseCache | null>;
 
-  constructor(isSsrInitialized: boolean) {
-    this.isSsrInitialized = isSsrInitialized;
+  constructor({ isSSR }: PromiseCacheOptions) {
+    this.isSsrInitialized = !!isSSR;
   }
 
   public static getContext() {

@@ -1,12 +1,8 @@
-import { getDisplayName } from './utils/getDisplayName';
 import { NextPage, NextPageContext } from 'next';
 import App, { AppContext, AppInitialProps } from 'next/app';
 import Head from 'next/head';
 import React, { useMemo } from 'react';
-import { PromiseCache, InitialCache } from './data/PromiseCache';
-import { isSSR } from './utils/isSSR';
-import { getPromiseDataFromTree } from './ssr/getPromiseDataFromTree';
-
+import { InitialCache, PromiseCache } from 'with-next-promise-tree-walker/dist/data/PromiseCache';
 
 type WithPromisesContext = AppContext & NextPageContext;
 
@@ -14,6 +10,12 @@ export interface IWithPromiseCacheSSRProps {
   promises?: PromiseCache
   initialCache?: InitialCache
 }
+
+function getDisplayName(Component: React.ComponentType<any>) {
+  return Component.displayName || Component.name || 'Unknown';
+}
+
+export { getDisplayName };
 
 export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | typeof App) {
   const PromiseCacheContext = PromiseCache.getContext();
@@ -31,6 +33,7 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
       </PromiseCacheContext.Provider>
     );
   }
+
   if (process.env.NODE_ENV === 'development') {
     WithPromises.displayName = `WithPromises(${getDisplayName(PageComponent)})`;
   }
@@ -44,7 +47,7 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
       pageProps = { ...pageProps, ...(await PageComponent.getInitialProps(ctx)) };
     }
 
-    if (!isSSR) {
+    if (typeof window !== 'undefined') {
       return pageProps;
     }
 
@@ -55,6 +58,7 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
     const promises = new PromiseCache(true);
 
     try {
+      const { getPromiseDataFromTree } = await import('with-next-promise-tree-walker/dist/ssr/getPromiseDataFromTree');
       // Since AppComponents and PageComponents have different context types
       // we need to modify their props a little.
       let props;
@@ -68,8 +72,10 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
       promises.seal();
       console.error('Error while running `getPromiseDataFromTree`', error);
     }
+
     // head side effect therefore need to be cleared manually
     Head.rewind();
+    
     return {
       ...pageProps,
       initialCache: promises.getInitialCacheResult(),

@@ -11,10 +11,12 @@ interface VercelRepo {
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const Repo: React.FC = () => {
-  const { isLoading, data, error } = usePromise<VercelRepo>('https://api.github.com/repos/vercel/swr', fetcher, { ssr: true, skip: false });
+  const { isLoading, data, error } = usePromise<VercelRepo>('repos/vercel/swr', () => fetcher('https://api.github.com/repos/vercel/swr'), { ssr: true, skip: false });
   
-  if (error) return "An error has occurred.";
-  if (!data) return "Loading...";
+  if (error) return <div>An error has occurred</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (!data) return <div>No results found.</div>;
+  
   return (
     <div>
       <h1>{data.name}</h1>
