@@ -1,0 +1,85 @@
+{
+  "name": "with-next-promise-tree-walker",
+  "description": "SSR data fetching using on component level without having to (pre)fetch in getInitialProps",
+  "version": "0.0.0-development",
+  "license": "MIT",
+  "typings": "dist/index.d.ts",
+  "source": "src/index.ts",
+  "main": "./dist/with-next-promise-tree-walker.js",
+  "exports": "./dist/with-next-promise-tree-walker.modern.js",
+  "module": "./dist/with-next-promise-tree-walker.module.js",
+  "unpkg": "./dist/with-next-promise-tree-walker.umd.js",
+  "homepage": "https://github.com/daphnesmit/with-next-promise-tree-walker#readme",
+  "author": "Daphne Smit",
+  "sideEffects": false,
+  "keywords": [
+    "nextjs",
+    "next",
+    "getDataFromTree",
+    "ssr",
+    "fetch",
+    "react",
+    "tree",
+    "tree-walker"
+  ],
+  "contributors": [
+    {
+      "name": "Daphne Smit",
+      "email": "daphnesmit1986@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daphnesmit/with-next-promise-tree-walker"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "microbundle --jsx React.createElement",
+    "dev": "microbundle watch",
+    "build:types": "tsc --declaration --emitDeclarationOnly",
+    "lint": "npm run type-check",
+    "type-check": "tsc --noEmit"
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "develop",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16",
+    "next": ">=10"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-angular": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@types/node": "^14.14.22",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "husky": "^4.3.8",
+    "microbundle": "^0.13.0",
+    "next": "^10.0.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "typescript": "^4.1.3"
+  }
+}
