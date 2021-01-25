@@ -58,7 +58,7 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
     const promises = new PromiseCache({ isSSR: true });
 
     try {
-      const { getPromiseDataFromTree } = await import('with-next-promise-tree-walker/dist/ssr/getPromiseDataFromTree');
+      const { getPromiseDataFromTree } = await import('with-next-promise-tree-walker');
       // Since AppComponents and PageComponents have different context types
       // we need to modify their props a little.
       let props;
