@@ -1,6 +1,6 @@
 import React, { Context } from 'react';
 
-export interface InitialCache {
+export interface InitialCacheResult {
   [key: string]: any
 }
 
@@ -63,14 +63,14 @@ export class PromiseCache {
     }
   }
 
-  public setInitialCacheResult(state: InitialCache) {
+  public setInitialCacheResultResult(state: InitialCacheResult) {
     for (const key in state) {
       this.cachedResults.set(key, state[key]);
     }
   }
 
-  public getInitialCacheResult() {
-    const cache: InitialCache = {};
+  public getInitialCacheResultResult() {
+    const cache: InitialCacheResult = {};
     this.cachedResults.forEach((value, key) => {
       cache[key] = value;
     });

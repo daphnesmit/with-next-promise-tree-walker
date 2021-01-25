@@ -1,3 +1,3 @@
 export { getPromiseDataFromTree } from './ssr/getPromiseDataFromTree'
-export { PromiseCache } from './data/PromiseCache'
+export { InitialCacheResult, PromiseCache } from './data/PromiseCache'
 export { usePromise } from './hooks/usePromise'

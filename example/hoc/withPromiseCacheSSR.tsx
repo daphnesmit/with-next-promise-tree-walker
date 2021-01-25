@@ -2,13 +2,13 @@ import { NextPage, NextPageContext } from 'next';
 import App, { AppContext, AppInitialProps } from 'next/app';
 import Head from 'next/head';
 import React, { useMemo } from 'react';
-import { InitialCache, PromiseCache } from 'with-next-promise-tree-walker/dist/data/PromiseCache';
+import { InitialCacheResult, PromiseCache } from 'with-next-promise-tree-walker';
 
 type WithPromisesContext = AppContext & NextPageContext;
 
 export interface IWithPromiseCacheSSRProps {
   promises?: PromiseCache
-  initialCache?: InitialCache
+  initialCacheResult?: InitialCacheResult
 }
 
 function getDisplayName(Component: React.ComponentType<any>) {
@@ -20,11 +20,11 @@ export { getDisplayName };
 export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | typeof App) {
   const PromiseCacheContext = PromiseCache.getContext();
 
-  function WithPromises({ initialCache, promises, ...props }: IWithPromiseCacheSSRProps) {
-    const _promises = useMemo<PromiseCache>(() => promises || new PromiseCache(false), [promises]);
+  function WithPromises({ initialCacheResult, promises, ...props }: IWithPromiseCacheSSRProps) {
+    const _promises = useMemo<PromiseCache>(() => promises || new PromiseCache({ isSSR: false }), [promises]);
 
-    if (initialCache && Object.keys(initialCache).length) {
-      _promises.setInitialCacheResult(initialCache);
+    if (initialCacheResult && Object.keys(initialCacheResult).length) {
+      _promises.setInitialCacheResult(initialCacheResult);
     }
 
     return (
@@ -55,7 +55,7 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
       return pageProps;
     }
 
-    const promises = new PromiseCache(true);
+    const promises = new PromiseCache({ isSSR: true });
 
     try {
       const { getPromiseDataFromTree } = await import('with-next-promise-tree-walker/dist/ssr/getPromiseDataFromTree');
@@ -75,10 +75,10 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
 
     // head side effect therefore need to be cleared manually
     Head.rewind();
-    
+
     return {
       ...pageProps,
-      initialCache: promises.getInitialCacheResult(),
+      initialCacheResult: promises.getInitialCacheResult(),
     };
   };
 
