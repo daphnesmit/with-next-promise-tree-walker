@@ -71,7 +71,7 @@
   },
   "include": [
     "src"
-  ],
+, "example/withPromiseCacheSSR.tsx"  ],
   "exclude": [
     "node_modules"
   ]
