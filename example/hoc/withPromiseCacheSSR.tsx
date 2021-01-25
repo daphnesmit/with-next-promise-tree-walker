@@ -2,13 +2,13 @@ import { NextPage, NextPageContext } from 'next';
 import App, { AppContext, AppInitialProps } from 'next/app';
 import Head from 'next/head';
 import React, { useMemo } from 'react';
-import { PromiseCache } from 'with-next-promise-tree-walker';
+import { InitialCacheResult, PromiseCache } from 'with-next-promise-tree-walker';
 
 type WithPromisesContext = AppContext & NextPageContext;
 
 export interface IWithPromiseCacheSSRProps {
   promises?: PromiseCache
-  initialCacheResult?: any
+  initialCacheResult?: InitialCacheResult
 }
 
 function getDisplayName(Component: React.ComponentType<any>) {
@@ -24,7 +24,7 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
     const _promises = useMemo<PromiseCache>(() => promises || new PromiseCache({ isSSR: false }), [promises]);
 
     if (initialCacheResult && Object.keys(initialCacheResult).length) {
-      _promises.setInitialCacheResult(initialCacheResult);
+      _promises.setInitialCacheResultResult(initialCacheResult);
     }
 
     return (
