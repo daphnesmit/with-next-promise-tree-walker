@@ -11,9 +11,9 @@ interface IUsePromiseCacheSubscription<T> {
 function usePromiseCacheSubscription<T>(): IUsePromiseCacheSubscription<T> {
   const PromiseCache = usePromiseCache();
 
-  const isSsrInitialized = PromiseCache.getIsSsrInitialized();
-  const addPromise = (id: string, data: Promise<any>) => PromiseCache.addPromise(id, data);
-  const addResultToCache = (id: string, data: any) => PromiseCache.addResultToCache(id, data);
+  const isSsrInitialized = !!PromiseCache?.getIsSsrInitialized();
+  const addPromise = (id: string, data: Promise<any>) => PromiseCache?.addPromise(id, data);
+  const addResultToCache = (id: string, data: any) => PromiseCache?.addResultToCache(id, data);
 
   return {
     addPromise,

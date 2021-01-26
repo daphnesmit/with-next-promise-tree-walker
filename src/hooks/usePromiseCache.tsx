@@ -2,11 +2,7 @@ import { useContext } from 'react';
 
 import { PromiseCache } from '../data/PromiseCache';
 
-export const usePromiseCache = (): PromiseCache => {
+export const usePromiseCache = (): PromiseCache | null => {
   const context = useContext(PromiseCache.getContext());
-  if (context === null) {
-    throw new Error('usePromiseCache must be used within a PromiseCacheProvider');
-  }
-
   return context;
 };
