@@ -15,8 +15,6 @@ function getDisplayName(Component: React.ComponentType<any>) {
   return Component.displayName || Component.name || 'Unknown';
 }
 
-export { getDisplayName };
-
 export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | typeof App) {
   const PromiseCacheContext = PromiseCache.getContext();
 

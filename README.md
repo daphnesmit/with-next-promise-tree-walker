@@ -30,14 +30,14 @@ But try it out and see if it is a bottleneck for you!
 ## Usage
 See the `example` folder for a full fletched example on how to use this.
 
-Start of by creating a custom Higher Order Component that user PromiseCache and the getPromiseDataFromTree method:
+Start of by creating a custom Higher Order Component that uses PromiseCache and the getPromiseDataFromTree method:
 
 ```jsx
 import { NextPage, NextPageContext } from 'next';
 import App, { AppContext, AppInitialProps } from 'next/app';
 import Head from 'next/head';
 import React, { useMemo } from 'react';
-import { InitialCache, PromiseCache } from 'with-next-promise-tree-walker/dist/data/PromiseCache';
+import { InitialCache, PromiseCache } from 'with-next-promise-tree-walker';
 
 type WithPromisesContext = AppContext & NextPageContext;
 
@@ -49,8 +49,6 @@ export interface IWithPromiseCacheSSRProps {
 function getDisplayName(Component: React.ComponentType<any>) {
   return Component.displayName || Component.name || 'Unknown';
 }
-
-export { getDisplayName };
 
 export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | typeof App) {
   const PromiseCacheContext = PromiseCache.getContext();
@@ -93,7 +91,7 @@ export default function WithPromiseCacheSSR<T>(PageComponent: NextPage<any> | ty
     const promises = new PromiseCache({ isSSR: true });
 
     try {
-      const { getPromiseDataFromTree } = await import('with-next-promise-tree-walker/dist/ssr/getPromiseDataFromTree');
+      const { getPromiseDataFromTree } = await import('with-next-promise-tree-walker');
       // Since AppComponents and PageComponents have different context types
       // we need to modify their props a little.
       let props;
@@ -148,7 +146,7 @@ interface VercelRepo {
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const SomePage: React.FC = () => {
-  const { isLoading, data, error } = usePromise<VercelRepo>('repos/vercel/swr', () => fetcher('https://api.github.com/repos/vercel/swr'), { ssr: true, skip: false });
+  const { isLoading, data, error } = usePromise<VercelRepo>('repos/vercel/swr', fetcher('https://api.github.com/repos/vercel/swr'), { ssr: true, skip: false });
   
   if (error) return <div>An error has occurred</div>;
   if (isLoading) return <div>Loading...</div>;

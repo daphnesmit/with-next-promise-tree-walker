@@ -15,7 +15,7 @@ function usePromiseResultCache<T>(key: string): IUsePromiseResultCache<T> {
   const PromiseCache = usePromiseCache();
 
   const reducer = useMemo(() => createReducer<T>(), []);
-  const cachedData = useMemo(() => PromiseCache.getResultFromCache<T>(key), [PromiseCache, key]);
+  const cachedData = useMemo(() => PromiseCache?.getResultFromCache<T>(key), [PromiseCache, key]);
   const initialState = useMemo(() => getInitialState(cachedData), [cachedData]);
   const [state, dispatch] = useReducer(reducer, initialState);
 
