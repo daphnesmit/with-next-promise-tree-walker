@@ -42,6 +42,9 @@
     "lint": "npm run type-check",
     "type-check": "tsc --noEmit"
   },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
   "release": {
     "branches": [
       "main",
