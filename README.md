@@ -30,7 +30,7 @@ But try it out and see if it is a bottleneck for you!
 ## Usage
 See the `example` folder for a full fletched example on how to use this.
 
-Start of by creating a custom Higher Order Component that user PromiseCache and the getPromiseDataFromTree method:
+Start of by creating a custom Higher Order Component that uses PromiseCache and the getPromiseDataFromTree method:
 
 ```jsx
 import { NextPage, NextPageContext } from 'next';
