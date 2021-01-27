@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { isSSR } from '../utils/isSSR';
+import { fetcherFn } from '../types';
 
+import { isSSR } from '../utils/isSSR';
 import { usePromiseCacheSubscription } from './usePromiseCacheSubscription';
 
 export type UsePromiseOptions = {
@@ -12,7 +13,7 @@ export type UsePromiseCallback<T> = (data?: T, error?: Error) => void
 
 function useBasePromise<T>(
   id: string,
-  fetcher: Promise<T>,
+  fetcher: fetcherFn<T>,
   options?: UsePromiseOptions,
   callback?: UsePromiseCallback<T>,
 ) {
@@ -40,8 +41,8 @@ function useBasePromise<T>(
     return error;
   }, [addResultToCache, callback, id]);
 
-  const getPromise = useCallback((promise: Promise<T>) => {
-    return promise
+  const getPromise = useCallback((promiseFn: fetcherFn<T>) => {
+    return promiseFn()
       .then(getPromiseSuccess)
       .catch(getPromiseError);
   }, [getPromiseError, getPromiseSuccess]);
@@ -54,17 +55,17 @@ function useBasePromise<T>(
     getPromise(fetcher);
   }, [fetcher, getPromise]);
 
-  const fetchData = useCallback(() => {
-    if (options?.skip) return;
+  const fetchData = useCallback((customOptions?: UsePromiseOptions) => {
+    const config = { ...options, ...customOptions };
 
-    if (isSSR && isSsrInitialized && options?.ssr) {
+    if (isSSR && isSsrInitialized && config?.ssr) {
       fetchDataSSR();
     }
 
-    if (!isSSR && !options?.ssr) {
+    if (!isSSR && !config?.ssr) {
       fetchDataClient();
     }
-  }, [isSsrInitialized, options, fetchDataSSR, fetchDataClient]);
+  }, [options, isSsrInitialized, fetchDataSSR, fetchDataClient]);
 
   return fetchData;
 }

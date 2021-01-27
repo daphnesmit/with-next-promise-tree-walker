@@ -133,6 +133,8 @@ export default WithPromiseCacheSSR(MyApp)
 
 In your component/page you need to use the `usePromise()` hook. This example uses Typescript.
 
+usePromise() also exports a run() function. If you turn skip to true you can manually fetch the data by calling the exported run() function.
+
 ```jsx
 import { usePromise } from  'with-next-promise-tree-walker'
 
@@ -146,7 +148,7 @@ interface VercelRepo {
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const SomePage: React.FC = () => {
-  const { isLoading, data, error } = usePromise<VercelRepo>('repos/vercel/swr', fetcher('https://api.github.com/repos/vercel/swr'), { ssr: true, skip: false });
+  const { isLoading, data, error } = usePromise<VercelRepo>('repos/vercel/swr', () => fetcher('https://api.github.com/repos/vercel/swr'), { ssr: true, skip: false });
   
   if (error) return <div>An error has occurred</div>;
   if (isLoading) return <div>Loading...</div>;

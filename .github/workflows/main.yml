@@ -27,16 +27,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12.x
-
-      - uses: jgierer12/npm-auth-gpr@v1
-        if: steps.cache.outputs.cache-hit != 'true'
-        with:
-          token: ${{ secrets.GH_ELSEU_ALL }}
-
-      # - name: Setup NPM Registry
-      #   if: steps.cache.outputs.cache-hit != 'true'
-      #   run: npm config set @elseu:registry https://npm.pkg.github.com/
-
+          
       - name: NPM install
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
