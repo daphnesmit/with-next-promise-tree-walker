@@ -133,6 +133,8 @@ export default WithPromiseCacheSSR(MyApp)
 
 In your component/page you need to use the `usePromise()` hook. This example uses Typescript.
 
+usePromise() also exports a run() function. If you turn skip to true you can manually fetch the data by calling the exported run() function.
+
 ```jsx
 import { usePromise } from  'with-next-promise-tree-walker'
 
