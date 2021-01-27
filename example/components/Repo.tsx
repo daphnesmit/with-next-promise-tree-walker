@@ -8,10 +8,10 @@ interface VercelRepo {
   forks_count: number
 }
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcherFn = (url: string) => () => fetch(url).then(res => res.json());
 
 const Repo: React.FC = () => {
-  const { isLoading, data, error } = usePromise<VercelRepo>('repos/vercel/swr', () => fetcher('https://api.github.com/repos/vercel/swr'), { ssr: true, skip: false });
+  const { isLoading, data, error } = usePromise<VercelRepo>('repos/vercel/swr', fetcherFn('https://api.github.com/repos/vercel/swr'), { ssr: true, skip: false });
   
   if (error) return <div>An error has occurred</div>;
   if (isLoading) return <div>Loading...</div>;
